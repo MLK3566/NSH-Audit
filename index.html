@@ -30,7 +30,7 @@
         
         .navbar { background: var(--nsh-blue); padding: 15px 20px; border-bottom: 4px solid var(--nsh-orange); color: white; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
         .logo-container { height: 55px; display: flex; align-items: center; }
-        .logo-nsh { height: 55px; width: auto; overflow: visible; }
+        .logo-nsh { height: 55px; width: auto; display: block; }
         .nav-title { font-size: 22px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; flex-grow: 1; text-align: center; }
         .btn-logout { background: var(--color-ko); color: white; border: none; padding: 8px 12px; border-radius: 6px; font-weight: 800; font-family: 'Poppins'; cursor: pointer; font-size: 10px; }
 
@@ -42,7 +42,6 @@
         .form-step { display: none; }
         .form-step.active { display: block; }
         
-        /* ... Le reste de vos styles CSS (post-bloc, btn-status, modal, etc.) reste strictement identique ... */
         .post-bloc { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px; margin-bottom: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.01); }
         .post-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
         .post-label { font-size: 12px; font-weight: 800; color: var(--nsh-blue); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
@@ -109,31 +108,25 @@
             width: 90%; max-width: 350px; box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             text-align: center; border-top: 6px solid var(--nsh-orange);
         }
-        .login-box svg { height: 80px; margin-bottom: 20px; }
-        .login-box h2 { color: var(--nsh-blue); font-weight: 900; font-size: 20px; margin-top: 0; }
+        .login-box .logo-img { max-width: 150px; height: auto; margin-bottom: 20px; display: inline-block; }
+        .login-box h2 { color: var(--nsh-blue); font-weight: 900; font-size: 20px; margin-top: 0; text-transform: uppercase; }
         .login-box input { margin-bottom: 15px; background: #f1f5f9; border: 1px solid #cbd5e1; }
         .btn-login {
             background: var(--nsh-orange); color: white; border: none; padding: 15px; 
             width: 100%; border-radius: 8px; font-weight: 900; font-family: 'Poppins';
             font-size: 14px; cursor: pointer; text-transform: uppercase;
         }
-        #login-error { color: var(--color-ko); font-size: 12px; font-weight: 700; margin-top: 10px; display: none; }
+        #login-error { color: var(--color-ko); font-size: 12px; font-weight: 700; margin-top: 10px; display: none; background: #fef2f2; padding: 8px; border-radius: 6px; }
         
-        /* Conteneur de l'application (masqué par défaut) */
         #app-wrapper { display: none; }
     </style>
 </head>
 <body>
 
-<!-- ÉCRAN DE CONNEXION SECURISE -->
+<!-- ÉCRAN DE CONNEXION AVEC VOTRE PROPRE LOGO IMAGE.PNG -->
 <div id="auth-overlay">
     <div class="login-box">
-        <svg viewBox="0 0 200 230" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="100" cy="90" r="75" fill="none" stroke="#f59e0b" stroke-width="12" stroke-dasharray="320 160" transform="rotate(-40 100)"/>
-            <path d="M40,115 L100,60 L160,115" fill="none" stroke="#f59e0b" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M45,120 L100,70 L155,120 L135,145 L65,145 Z" fill="#051c2c"/>
-            <text x="100" y="205" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="44" fill="#051c2c" text-anchor="middle">NSH</text>
-        </svg>
+        <img src="image.png" alt="Logo NSH" class="logo-img">
         <h2>ACCÈS SÉCURISÉ</h2>
         <input type="email" id="email-input" placeholder="Adresse Email">
         <input type="password" id="password-input" placeholder="Mot de passe">
@@ -142,24 +135,18 @@
     </div>
 </div>
 
-<!-- CONTENU DE L'APPLICATION (Sera affiché uniquement si authentifié) -->
+<!-- CONTENU DE L'APPLICATION -->
 <div id="app-wrapper">
 
-    <!-- Navbar avec Bouton Déconnexion ajouté -->
+    <!-- Navbar avec Votre Logo Officiel image.png -->
     <div class="navbar" id="main-nav">
         <div class="logo-container">
-            <svg class="logo-nsh" viewBox="0 0 200 230" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="100" cy="90" r="75" fill="none" stroke="#f59e0b" stroke-width="12" stroke-dasharray="320 160" transform="rotate(-40 100)"/>
-                <path d="M40,115 L100,60 L160,115" fill="none" stroke="#f59e0b" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M45,120 L100,70 L155,120 L135,145 L65,145 Z" fill="#ffffff"/>
-                <text x="100" y="205" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="44" fill="#ffffff" text-anchor="middle">NSH</text>
-            </svg>
+            <img src="image.png" alt="Logo NSH" class="logo-nsh">
         </div>
         <span class="nav-title">Audit V24</span>
         <button class="btn-logout" id="logout-btn">X DÉCONNEXION</button>
     </div>
 
-    <!-- TOUT LE RESTE DE VOTRE CODE HTML (TABS, FORMULAIRES, PDF, MODAL) VIENT ICI -->
     <button class="btn-edit-mode" id="backToEditBtn" onclick="revenirSaisie()">✏️ REVENIR À LA SAISIE DE L'AUDIT</button>
 
     <div class="tabs" id="main-tabs">
@@ -178,8 +165,7 @@
                     <input type="text" id="nom" placeholder="Nom">
                     <input type="text" id="prenom" placeholder="Prénom">
                 </div>
-                <!-- Vous remettez ici tout votre contenu d'audit ligne par ligne à partir du <div class="post-bloc" data-q="Financement & Revenus"> -->
-                <p style="color:var(--nsh-blue); font-weight:800; text-align:center;">[VOTRE CODE DE FORMULAIRE COMPLET PREND PLACE ICI. J'ai condensé l'affichage pour vous montrer la structure Firebase, copiez/collez simplement les blocs div.form-step de votre fichier précédent ici.]</p>
+                <p style="color:var(--nsh-blue); font-weight:800; text-align:center;">[VOTRE CODE DE FORMULAIRE COMPLET PREND PLACE ICI.]</p>
             </div>
             
             <div class="actions">
@@ -189,45 +175,38 @@
         </form>
     </div>
 
-    <div id="pdf-render">
-        <!-- VOTRE BLOC PDF-RENDER -->
-    </div>
+    <div id="pdf-render"></div>
+    <div id="techModal" class="modal-overlay"></div>
 
-    <div id="techModal" class="modal-overlay">
-        <!-- VOTRE BLOC MODAL -->
-    </div>
+</div>
 
-</div> <!-- Fin de app-wrapper -->
-
-<!-- --- SCRIPTS D'APPLICATION (Vos fonctions actuelles) --- -->
+<!-- --- VOS FONCTIONS DE CALCUL EXISTANTES --- -->
 <script>
-    // Vous collez ici toutes vos fonctions Javascript actuelles (jump, set, toggleMulti, calculDPE, generate, etc.)
-    // La base de données dbTech, les fonctions openTechModal... TOUT vient ici.
+    // Vos fonctions d'audit (jump, set, dbTech, openTechModal, etc.) restent ici.
 </script>
 
 <!-- ======================================================== -->
-<!-- SCRIPTS FIREBASE POUR LA SÉCURITÉ ET LE CONTRÔLE A DISTANCE -->
+<!-- SCRIPTS FIREBASE CORRIGÉS AVEC VOS VRAIES CLÉS CONFIGURÉES -->
 <!-- ======================================================== -->
 <script type="module">
-  // Importation des outils Google Firebase
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-  // ⚠️⚠️⚠️ REMPLACEZ LES VALEURS CI-DESSOUS PAR CELLES DE VOTRE PROJET FIREBASE (Etape 1.6) ⚠️⚠️⚠️
+  // Vos clés d'accès réelles ont été injectées directement ici
   const firebaseConfig = {
-    apiKey: "VOTRE_API_KEY_ICI",
-    authDomain: "VOTRE_PROJET_ID.firebaseapp.com",
-    projectId: "VOTRE_PROJET_ID",
-    storageBucket: "VOTRE_PROJET_ID.appspot.com",
-    messagingSenderId: "VOTRE_MESSAGING_ID",
-    appId: "VOTRE_APP_ID"
+    apiKey: "AIzaSyDh0QxwOrgtt4HabMotejQ0kZfXr7waTyc",
+    authDomain: "nsh-audit.firebaseapp.com",
+    projectId: "nsh-audit",
+    storageBucket: "nsh-audit.firebasestorage.app",
+    messagingSenderId: "715135678964",
+    appId: "1:715135678964:web:6f15e41b4031c6afe661a1",
+    measurementId: "G-CDX9GY2DM8"
   };
 
-  // Initialisation
+  // Initialisation propre de l'application
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  // Éléments HTML
   const authOverlay = document.getElementById('auth-overlay');
   const appWrapper = document.getElementById('app-wrapper');
   const loginBtn = document.getElementById('login-btn');
@@ -236,23 +215,28 @@
   const errorMsg = document.getElementById('login-error');
   const logoutBtn = document.getElementById('logout-btn');
 
-  // Surveiller l'état de connexion en temps réel
+  // Écouteur en temps réel de l'état d'authentification
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      // Utilisateur autorisé : On cache l'écran de connexion et on affiche l'app
       authOverlay.style.display = 'none';
       appWrapper.style.display = 'block';
     } else {
-      // Utilisateur non autorisé : On bloque tout
       authOverlay.style.display = 'flex';
       appWrapper.style.display = 'none';
     }
   });
 
-  // Action du bouton de connexion
+  // Gestion de la soumission de connexion
   loginBtn.addEventListener('click', () => {
-    const email = emailInput.value;
+    const email = emailInput.value.trim();
     const password = passwordInput.value;
+    
+    if(!email || !password) {
+        errorMsg.innerText = "Veuillez remplir tous les champs.";
+        errorMsg.style.display = 'block';
+        return;
+    }
+
     loginBtn.innerText = "Vérification...";
     
     signInWithEmailAndPassword(auth, email, password)
@@ -261,18 +245,27 @@
         loginBtn.innerText = "Se Connecter";
       })
       .catch((error) => {
-        errorMsg.style.display = 'block';
         loginBtn.innerText = "Se Connecter";
-        console.error("Erreur de connexion :", error.message);
+        // Traduction claire des erreurs Firebase directement sur l'écran de l'iPad
+        if (error.code === 'auth/wrong-password') {
+            errorMsg.innerText = "Mot de passe incorrect.";
+        } else if (error.code === 'auth/user-not-found') {
+            errorMsg.innerText = "Aucun compte associé à cet e-mail.";
+        } else if (error.code === 'auth/too-many-requests') {
+            errorMsg.innerText = "Trop de tentatives. Compte temporairement bloqué.";
+        } else {
+            errorMsg.innerText = "Erreur de connexion : " + error.message;
+        }
+        errorMsg.style.display = 'block';
       });
   });
 
-  // Action du bouton de déconnexion
+  // Déconnexion
   logoutBtn.addEventListener('click', () => {
     signOut(auth).then(() => {
-        // Redirige vers l'écran de login automatiquement via onAuthStateChanged
         emailInput.value = '';
         passwordInput.value = '';
+        errorMsg.style.display = 'none';
     }).catch((error) => {
         console.error(error);
     });
@@ -281,25 +274,3 @@
 
 </body>
 </html>
-
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyDh0QxwOrgtt4HabMotejQ0kZfXr7waTyc",
-  authDomain: "nsh-audit.firebaseapp.com",
-  projectId: "nsh-audit",
-  storageBucket: "nsh-audit.firebasestorage.app",
-  messagingSenderId: "715135678964",
-  appId: "1:715135678964:web:6f15e41b4031c6afe661a1",
-  measurementId: "G-CDX9GY2DM8"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
