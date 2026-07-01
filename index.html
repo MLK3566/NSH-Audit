@@ -2,315 +2,224 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="NSH Audit">
-    <link rel="apple-touch-icon" href="image.png">
-    
-    <title>RAPPORT D’AUDIT DE CONFORMITÉ</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSH - Rapport d'Audit de Conformité</title>
     <style>
-        :root { 
-            --nsh-blue: #051c2c; 
-            --nsh-orange: #f59e0b; 
-            --color-ok: #10b981; 
-            --color-warn: #f59e0b;
-            --color-ko: #ef4444; 
-            --color-yellow: #eab308;
-            --color-grey: #64748b;
-            --sel-grey: #e2e8f0; 
+        /* --- CSS INTÉGRÉ --- */
+        :root { --primary: #0056b3; --bg: #f4f7f6; --text: #333; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        
+        /* En-tête et Logo */
+        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-bottom: 20px; }
+        .logo { font-size: 24px; font-weight: bold; color: var(--primary); }
+        
+        /* Écran de connexion */
+        #login-section { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 60vh; }
+        input[type="email"], input[type="password"], input[type="text"], input[type="date"] { 
+            width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; 
         }
-        body { font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        background: #f1f5f9; margin: 0; padding-bottom: 40px; }
+        button { background-color: var(--primary); color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; width: 100%; font-weight: bold; }
+        button:hover { background-color: #004494; }
         
-        .navbar { background: var(--nsh-blue);
-        padding: 15px 20px; border-bottom: 4px solid var(--nsh-orange); color: white; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .logo-container { height: 55px; display: flex; align-items: center; }
-        .logo-nsh { height: 55px; width: auto; overflow: visible; }
-        
-        .nav-title { 
-            font-size: 22px;
-            font-weight: 800; 
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            flex-grow: 1;
-            text-align: center;
-            margin-right: 55px;
-        }
+        /* Navigation (Onglets) */
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tab-btn { background-color: #e9ecef; color: var(--text); padding: 10px; flex: 1; border-radius: 4px; text-align: center; cursor: pointer; font-weight: bold; }
+        .tab-btn.active { background-color: var(--primary); color: white; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
 
-        .tabs { display: flex; background: white; overflow-x: auto; border-bottom: 1px solid #ddd; position: sticky; top: 89px; z-index: 999; }
-        .tab { flex: 1; padding: 15px; text-align: center; font-size: 10px; font-weight: 900; color: #94a3b8; text-transform: uppercase; cursor: pointer; white-space: nowrap; }
-        .tab.active { color: var(--nsh-blue); border-bottom: 3px solid var(--nsh-orange); }
+        /* Formulaire d'audit */
+        .form-group { margin-bottom: 15px; }
+        label { font-weight: bold; display: block; margin-bottom: 5px; }
+        textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; min-height: 120px; font-family: inherit; }
         
-        .container { max-width: 850px; margin: 15px auto; background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .form-step { display: none; }
-        .form-step.active { display: block; }
-        
-        .post-bloc { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px; margin-bottom: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.01); }
-        
-        .post-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
-        .post-label { font-size: 12px; font-weight: 800; color: var(--nsh-blue); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
-        
-        .title-badge { font-size: 9px; font-weight: 900; padding: 3px 8px; border-radius: 20px; text-transform: uppercase; color: white; background: var(--nsh-orange); }
-        
-        .grid-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 8px; }
-        .btn-status { font-family: 'Poppins', sans-serif; background: white; border: 1px solid #cbd5e1; padding: 10px; border-radius: 8px; text-align: center; font-size: 10px; font-weight: 700; cursor: pointer; color: #64748b; transition: all 0.2s; user-select: none; }
-        
-        .btn-status.selected { background: var(--sel-grey); color: var(--nsh-blue); border: 2px solid var(--nsh-orange); font-weight: 800; }
-        .btn-status.selected[data-val="OK"] { background: var(--color-ok) !important; color: white !important; border-color: var(--color-ok) !important; }
-        .btn-status.selected[data-val="KO"] { background: var(--color-ko) !important; color: white !important; border-color: var(--color-ko) !important; }
-        .btn-status.selected[data-val="WARN"] { background: var(--color-warn) !important; color: white !important; border-color: var(--color-warn) !important; }
-        
-        .dpe-keyboard { display: flex; gap: 4px; margin-top: 10px; background: #f1f5f9; padding: 6px; border-radius: 8px; }
-        .dpe-key { flex: 1; padding: 10px 0; text-align: center; font-weight: 900; color: white; border-radius: 4px; cursor: pointer; opacity: 0.4; transition: transform 0.2s, opacity 0.2s; font-size: 14px; }
-        .dpe-key.active { opacity: 1; transform: scale(1.08); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
-        .dk-A { background: #10b981; } .dk-B { background: #10b981; }
-        .dk-C { background: #f59e0b; } .dk-D { background: #f59e0b; }
-        .dk-E { background: #ef4444; } .dk-F { background: #ef4444; } .dk-G { background: #b91c1c; }
-
-        .extra-info { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; align-items: stretch; }
-        .extra-info input[type="text"], .extra-info input[type="number"] { flex: 1; min-width: 80px; padding: 8px; font-size: 11px; border: 1px solid #e2e8f0; border-radius: 6px; font-family: 'Poppins', sans-serif; box-sizing: border-box; }
-        .note-line { width: 100%; margin-top: 8px; padding: 8px; border: none; border-bottom: 1px dashed #cbd5e1; background: transparent; font-size: 12px; color: #475569; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-
-        .reco-container { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
-        .reco-card { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px; border-radius: 8px; font-size: 12px; font-weight: 600; border-left: 5px solid #cbd5e1; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        
-        .reco-card.danger { border-left-color: var(--color-ko); background: #fef2f2; color: #991b1b; }
-        .reco-card.warning { border-left-color: var(--color-warn); background: #fffbeb; color: #92400e; }
-        .reco-card.discutable { border-left-color: var(--color-yellow); background: #fefce8; color: #713f12; }
-        .reco-card.success { border-left-color: var(--color-ok); background: #f0fdf4; color: #166534; }
-        
-        .reco-badge-btn { font-family: 'Poppins', sans-serif; font-size: 10px; font-weight: 900; text-transform: uppercase; padding: 6px 12px; border-radius: 6px; cursor: pointer; color: white; border: none; box-shadow: 0 2px 4px rgba(0,0,0,0.1); white-space: nowrap; }
-        .rbb-critique { background: var(--color-ko); }
-        .rbb-mediocre { background: var(--color-warn); }
-        .rbb-discutable { background: var(--color-yellow); color: #713f12; }
-
-        input, select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; box-sizing: border-box; background: white; font-family: 'Poppins', sans-serif; }
-        .actions { display: flex; justify-content: space-between; margin-top: 25px; }
-        .btn-nav { font-family: 'Poppins', sans-serif; padding: 15px 25px; border-radius: 10px; border: none; font-weight: 800; cursor: pointer; }
-        
-        .btn-edit-mode { font-family: 'Poppins', sans-serif; display: none; background: #1e293b; color: white; padding: 12px 20px; border-radius: 8px; font-weight: 800; border: none; cursor: pointer; margin: 15px auto; max-width: 850px; width: 100%; text-align: center; }
-
-        #pdf-render { display: none; padding: 30px; background: #f8fafc; font-size: 12px; color: #1e293b; }
-        .pdf-card { background: white; border-radius: 12px; padding: 16px; margin-bottom: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03); border: 1px solid #e2e8f0; }
-        .pdf-section-title { font-size: 14px; font-weight: 800; color: var(--nsh-blue); padding-bottom: 6px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; }
-        .pdf-section-title::before { content: ''; display: inline-block; width: 4px; height: 16px; background: var(--nsh-orange); border-radius: 2px; }
-        
-        .pdf-grid-info { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .pdf-info-item { background: #f1f5f9; padding: 10px 14px; border-radius: 8px; border-left: 3px solid var(--nsh-blue); }
-        
-        .pdf-item-row { padding: 10px; border-bottom: 1px solid #f1f5f9; font-size: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
-        .pdf-item-row:last-child { border-bottom: none; }
-        .pdf-badge-val { background: #e2e8f0; color: var(--nsh-blue); font-weight: 700; padding: 3px 8px; border-radius: 6px; font-size: 11px; text-transform: uppercase; }
-        
-        .pdf-reco-row { padding: 12px 16px; margin-bottom: 8px; border-radius: 8px; font-size: 11.5px; font-weight: 600; border-left: 6px solid #cbd5e1; page-break-inside: avoid; }
-        .prr-critique { border-left-color: var(--color-ko); background: #fef2f2; color: #991b1b; }
-        .prr-mediocre { border-left-color: var(--color-warn); background: #fffbeb; color: #92400e; }
-        .prr-discutable { border-left-color: var(--color-yellow); background: #fefce8; color: #713f12; }
-        .prr-success { border-left-color: var(--color-ok); background: #f0fdf4; color: #166534; }
-
+        /* Style d'impression pour la génération du PDF (Cache l'interface) */
         @media print {
-            body { background: white; padding: 0; margin: 0; }
-            .navbar, .tabs, .container, .actions, .btn-edit-mode { display: none !important; }
-            #pdf-render { display: block !important; width: 100%; max-width: 100%; position: absolute; top: 0; left: 0; padding: 0; background: white; }
-            .pdf-card { box-shadow: none; border: 1px solid #cbd5e1; page-break-inside: avoid; }
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; padding: 0; border: none; }
+            .no-print { display: none !important; }
+            input, textarea { border: none; padding: 0; resize: none; background: transparent; }
+            header { border-bottom: 2px solid black; color: black; }
         }
-
-        .sub-label { font-size: 11px; font-weight: 800; color: #64748b; margin: 8px 0 5px 0; }
-        .pill-select-wrapper { position: relative; width: 100%; }
-        .pill-select-trigger { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: white; border: 1px solid #cbd5e1; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 10px; font-weight: 700; color: #64748b; cursor: pointer; user-select: none; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.3px; }
-        .pill-select-trigger:hover { border-color: var(--nsh-orange); color: var(--nsh-blue); }
-        .pill-select-trigger.has-value { background: var(--sel-grey); color: var(--nsh-blue); border: 2px solid var(--nsh-orange); font-weight: 800; }
-        .pill-select-trigger .arrow { font-size: 8px; transition: transform 0.2s; display: inline-block; margin-left: 6px; }
-        .pill-select-wrapper.open .pill-select-trigger { border-color: var(--nsh-orange); }
-        .pill-select-options { display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: white; border: 1px solid #e2e8f0; border-radius: 10px; z-index: 1002; box-shadow: 0 8px 24px rgba(0,0,0,0.12); overflow: hidden; max-height: 220px; overflow-y: auto; }
-        .pill-select-wrapper.open .pill-select-options { display: block; }
-        .pill-option { padding: 11px 14px; font-size: 10px; font-weight: 700; font-family: 'Poppins', sans-serif; cursor: pointer; color: #475569; text-transform: uppercase; letter-spacing: 0.3px; border-bottom: 1px solid #f8fafc; transition: all 0.15s; display: flex; align-items: center; gap: 8px; }
-        .pill-option:last-child { border-bottom: none; }
-        .pill-option:hover { background: #f1f5f9; color: var(--nsh-blue); padding-left: 18px; }
-        .pill-option::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #cbd5e1; flex-shrink: 0; transition: background 0.15s; }
-        .pill-option:hover::before { background: var(--nsh-orange); }
-        #ville_container { position: relative; }
-        .ville-pill-wrapper { width: 100%; }
-        .ville-pill-wrapper .pill-select-options { max-height: 200px; }
-        .inline-pill-wrapper { flex: 1; min-width: 80px; }
-        .inline-pill-wrapper .pill-select-trigger { padding: 8px 10px; font-size: 10px; min-height: 33px; }
-        .isolant-pill-wrapper { width: 100%; margin-top: 6px; }
-        .isolant-pill-wrapper .pill-select-options { max-height: 220px; }
-
-        .btn-info {
-            background: #e2e8f0; color: var(--nsh-blue); border: none; padding: 4px 10px; border-radius: 6px; 
-            font-size: 10px; font-weight: 800; cursor: pointer; font-family: 'Poppins', sans-serif; 
-            transition: all 0.2s; text-transform: uppercase; display: flex; align-items: center; gap: 4px;
-        }
-        .btn-info:hover { background: var(--nsh-blue); color: white; }
-        .btn-info::before { content: '📄'; font-size: 12px; }
-
-        .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(5, 28, 44, 0.85); z-index: 2000; align-items: center; justify-content: center; 
-            padding: 20px; box-sizing: border-box; backdrop-filter: blur(4px);
-        }
-        .modal-overlay.active { display: flex; }
-        
-        .modal-card {
-            width: 100%; max-width: 650px; max-height: 85vh; overflow-y: auto; position: relative; 
-            background: #f8fafc; padding: 25px; border-radius: 12px; border-top: 6px solid var(--nsh-orange);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2); font-family: 'Poppins', sans-serif;
-        }
-        .modal-header {
-            display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; 
-            border-bottom: 2px solid #e2e8f0; padding-bottom: 12px;
-        }
-        .modal-title { font-size: 16px; font-weight: 900; color: var(--nsh-blue); text-transform: uppercase; }
-        .modal-subtitle { font-size: 11px; font-weight: 600; color: #64748b; margin-top: 4px; }
-        .btn-close {
-            background: var(--color-ko); color: white; border: none; width: 30px; height: 30px; 
-            border-radius: 50%; cursor: pointer; font-weight: 900; font-size: 14px; 
-            display: flex; align-items: center; justify-content: center; transition: 0.2s;
-        }
-        .btn-close:hover { transform: scale(1.1); background: #b91c1c; }
-
-        .tech-sol-row {
-            margin-bottom: 15px; padding: 15px; background: white; border-left: 4px solid var(--nsh-blue); 
-            border-radius: 0 8px 8px 0; font-size: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-            border: 1px solid #e2e8f0; border-left-width: 4px;
-        }
-        .tech-sol-row.alert { border-left-color: var(--color-ko); }
-        .tech-sol-row h4 { margin: 0 0 8px 0; color: var(--nsh-blue); font-size: 13px; text-transform: uppercase; font-weight: 800; display: flex; align-items: center; gap: 6px; }
-        .tech-sol-row p { margin: 0 0 8px 0; color: #334155; line-height: 1.6; }
-        .tech-sol-row .solution { background: #f0fdf4; padding: 8px 12px; border-radius: 6px; color: #166534; font-weight: 700; border: 1px solid #bbf7d0; display: inline-block; width: 100%; box-sizing: border-box; }
-        .tech-sol-row .arg-commercial { background: #fffbeb; padding: 8px 12px; border-radius: 6px; color: #92400e; font-weight: 700; border: 1px solid #fde68a; display: inline-block; width: 100%; box-sizing: border-box; margin-top: 6px; font-size: 11px;}
     </style>
 </head>
 <body>
 
-<div class="navbar" id="main-nav">
-    <div class="logo-container">
-        <svg class="logo-nsh" viewBox="0 0 200 230" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="100" cy="90" r="75" fill="none" stroke="#f59e0b" stroke-width="12" stroke-dasharray="320 160" transform="rotate(-40 100)"/>
-            <path d="M40,115 L100,60 L160,115" fill="none" stroke="#f59e0b" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M45,120 L100,70 L155,120 L135,145 L65,145 Z" fill="#ffffff"/>
-            <path d="M55,115 L100,73 L145,115" fill="none" stroke="#051c2c" stroke-width="4"/>
-            <rect x="85" y="100" width="12" height="12" fill="#051c2c"/>
-            <rect x="103" y="100" width="12" height="12" fill="#051c2c"/>
-            <rect x="85" y="117" width="12" height="12" fill="#051c2c"/>
-            <rect x="103" y="117" width="12" height="12" fill="#051c2c"/>
-            <text x="100" y="205" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="44" fill="#ffffff" text-anchor="middle">NSH</text>
-        </svg>
+    <!-- 1. ÉCRAN D'AUTHENTIFICATION -->
+    <div id="login-section" class="container">
+        <h2 class="logo">NSH - Accès Sécurisé</h2>
+        <input type="email" id="email" placeholder="Email professionnel">
+        <input type="password" id="password" placeholder="Mot de passe">
+        <button onclick="login()">Se connecter</button>
+        <p id="auth-error" style="color: red; display: none; margin-top: 10px;">Identifiants incorrects.</p>
     </div>
-    <span class="nav-title">RAPPORT D’AUDIT DE CONFORMITÉ</span>
-</div>
 
-<button class="btn-edit-mode" id="backToEditBtn" onclick="revenirSaisie()">✏️ REVENIR À LA SAISIE DE L'AUDIT</button>
-
-<div class="tabs" id="main-tabs">
-    <div class="tab active" onclick="jump(0)">Client</div>
-    <div class="tab" onclick="jump(1)">Extérieur</div>
-    <div class="tab" onclick="jump(2)">Isolation</div>
-    <div class="tab" onclick="jump(3)">Technique</div>
-    <div class="tab" onclick="jump(4)">Énergie</div>
-</div>
-
-<div class="container" id="main-container">
-    <form id="auditForm" onsubmit="event.preventDefault();">
-
-        <div class="form-step active">
-            <div style="display:flex; gap:10px; margin-bottom:10px;">
-                <input type="text" id="nom" placeholder="Nom">
-                <input type="text" id="prenom" placeholder="Prénom">
+    <!-- 2. APPLICATION PRINCIPALE (Cachée tant que non connecté) -->
+    <div id="app-section" class="container" style="display: none;">
+        <header>
+            <div class="logo">
+                <!-- Remplace le texte ci-dessous par ton image si besoin : <img src="logo.png" alt="NSH" style="max-height: 40px;"> -->
+                NSH | Audit de Conformité
             </div>
-            <div style="display:flex; gap:10px; margin-bottom:10px;">
-                <input type="text" id="tel" placeholder="Téléphone">
-                <input type="text" id="email" placeholder="Email">
-            </div>
-            <input type="text" id="adresse_rue" placeholder="Numéro et nom de rue" style="margin-bottom:10px;">
-            <div style="display:flex; gap:10px; margin-bottom:15px; align-items:flex-start;">
-                <input type="number" id="adresse_cp" placeholder="Code Postal" oninput="filtrerVilles(this.value)" style="flex:1; width:auto;">
-                <div id="ville_container" style="flex:2; position:relative;">
-                    <input type="text" id="adresse_ville" placeholder="Ville" style="width:100%; box-sizing:border-box;">
-                </div>
+            <button class="no-print" onclick="logout()" style="width: auto; background-color: #dc3545; padding: 5px 15px;">Déconnexion</button>
+        </header>
+
+        <div class="tabs no-print">
+            <div class="tab-btn active" onclick="switchTab('audit')">Nouveau Rapport</div>
+            <div class="tab-btn" onclick="switchTab('history')">Historique des Audits</div>
+        </div>
+
+        <!-- ONGLET : NOUVEAU RAPPORT -->
+        <div id="audit" class="tab-content active">
+            <div class="form-group">
+                <label>Nom du Client / Chantier :</label>
+                <input type="text" id="clientName" placeholder="Ex: Résidence Les Lilas">
             </div>
             
-            <div class="post-bloc" data-q="Financement & Revenus">
-                <div class="post-header">
-                    <span class="post-label">💰 Financement & Revenus</span>
-                    <div style="display:flex; align-items:center; gap:8px;">
-                        <button class="btn-info" type="button" onclick="openTechModal(this)">FICHE TECH</button>
-                        <span class="title-badge">PROFIL BANCAIRE</span>
-                    </div>
-                </div>
-                <div class="grid-options">
-                    <div class="btn-status" onclick="set(this)" data-id="cred">CRÉDIT EN COURS</div>
-                    <div class="btn-status" onclick="set(this)" data-id="cred">SANS CRÉDIT</div>
-                </div>
-                <div class="grid-options">
-                    <div class="btn-status" onclick="set(this)" data-id="epargne">AVEC ÉPARGNE</div>
-                    <div class="btn-status" onclick="set(this)" data-id="epargne" data-val="KO">SANS ÉPARGNE</div>
-                </div>
-                
-                <div class="sub-label" style="margin-top: 10px;">Barème 14 :</div>
-                <div class="grid-options" style="margin-bottom: 12px;">
-                    <div class="btn-status" onclick="set(this)" data-id="b14">OUI</div>
-                    <div class="btn-status" onclick="set(this)" data-id="b14" data-val="KO">NON</div>
-                </div>
+            <div class="form-group">
+                <label>Date de l'audit :</label>
+                <input type="date" id="auditDate">
             </div>
+            
+            <div class="form-group">
+                <label>Observations et points de contrôle :</label>
+                <textarea id="observations" placeholder="Détaillez les éléments techniques validés ou les non-conformités constatées..."></textarea>
+            </div>
+
+            <!-- Boutons d'actions -->
+            <div class="form-group no-print" style="display: flex; gap: 10px; margin-top: 20px;">
+                <button onclick="saveAudit()" style="background-color: #28a745;">💾 Enregistrer dans la base</button>
+                <button onclick="window.print()" style="background-color: #17a2b8;">📄 Imprimer / Sauvegarder en PDF</button>
+            </div>
+            <p id="save-msg" style="color: green; display: none; font-weight: bold;">Rapport enregistré avec succès !</p>
         </div>
-    </form>
-</div>
 
-<!-- SCRIPTS DE CHARGEMENT SÉCURISÉ FIREBASE AVEC GESTION DU HORS-LIGNE -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+        <!-- ONGLET : HISTORIQUE -->
+        <div id="history" class="tab-content no-print">
+            <h3>Derniers rapports enregistrés</h3>
+            <ul id="audit-list" style="padding-left: 20px;">
+                <!-- Les rapports Firebase s'afficheront ici -->
+            </ul>
+        </div>
+    </div>
 
-<script>
-    // Remplace cette configuration par tes identifiants Firebase exacts si nécessaire
-    const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_AUTH_DOMAIN",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_STORAGE_BUCKET",
-        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-        appId: "YOUR_APP_ID"
-    };
+    <!-- 3. SCRIPTS FIREBASE (Version CDN pour tout regrouper dans un seul fichier) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
-    // Initialisation sécurisée
-    let db = null;
-    if (typeof firebase !== 'undefined') {
-        firebase.initializeApp(firebaseConfig);
-        db = firebase.firestore();
-        
-        // CORRECTION CLÉ : Activation de la persistance locale IndexedDB pour éviter les blocages de connexion terrain
-        db.enablePersistence({ synchronizeTabs: true })
-            .then(() => {
-                console.log("Firebase : Cache local activé avec succès. L'application reste fluide même hors-ligne !");
-            })
-            .catch((err) => {
-                if (err.code == 'failed-precondition') {
-                    console.warn("La persistance a échoué car plusieurs onglets sont ouverts.");
-                } else if (err.code == 'unimplemented') {
-                    console.warn("Le navigateur actuel ne supporte pas la persistance locale.");
-                }
+    <!-- 4. JAVASCRIPT ET LOGIQUE MÉTIER -->
+    <script>
+        // ==========================================
+        // A. CONFIGURATION FIREBASE (À REMPLIR)
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "COLLE_TON_API_KEY_ICI",
+            authDomain: "COLLE_TON_AUTH_DOMAIN_ICI",
+            projectId: "COLLE_TON_PROJECT_ID_ICI",
+            storageBucket: "COLLE_TON_STORAGE_BUCKET_ICI",
+            messagingSenderId: "COLLE_TON_SENDER_ID_ICI",
+            appId: "COLLE_TON_APP_ID_ICI"
+        };
+
+        // Initialisation de Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // ==========================================
+        // B. GESTION DE L'AUTHENTIFICATION
+        // ==========================================
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('app-section').style.display = 'block';
+                loadAudits(); // Charge l'historique une fois connecté
+            } else {
+                document.getElementById('login-section').style.display = 'flex';
+                document.getElementById('app-section').style.display = 'none';
+            }
+        });
+
+        function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            auth.signInWithEmailAndPassword(email, password)
+                .catch(error => {
+                    document.getElementById('auth-error').style.display = 'block';
+                    console.error("Erreur de connexion :", error);
+                });
+        }
+
+        function logout() {
+            auth.signOut();
+        }
+
+        // ==========================================
+        // C. GESTION DE L'INTERFACE (ONGLETS)
+        // ==========================================
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // ==========================================
+        // D. GESTION DES DONNÉES (FIRESTORE)
+        // ==========================================
+        function saveAudit() {
+            const clientName = document.getElementById('clientName').value;
+            const auditDate = document.getElementById('auditDate').value;
+            const observations = document.getElementById('observations').value;
+
+            if(!clientName || !auditDate) {
+                alert("Veuillez renseigner le nom du client et la date.");
+                return;
+            }
+
+            db.collection("audits").add({
+                client: clientName,
+                date: auditDate,
+                observations: observations,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                const msg = document.getElementById('save-msg');
+                msg.style.display = 'block';
+                setTimeout(() => msg.style.display = 'none', 3000); // Disparaît après 3s
+                
+                // Réinitialise le formulaire
+                document.getElementById('clientName').value = '';
+                document.getElementById('auditDate').value = '';
+                document.getElementById('observations').value = '';
+                
+                loadAudits(); // Met à jour l'historique
+            }).catch(error => {
+                console.error("Erreur lors de l'enregistrement :", error);
+                alert("Une erreur est survenue lors de la sauvegarde.");
             });
-    } else {
-        console.error("Firebase n'a pas pu être chargé. Vérifie ta connexion internet ou tes scripts.");
-    }
+        }
 
-    // Fonctions stub de secours pour éviter les erreurs JS si manquantes dans le bout de code
-    function set(element) {
-        const parent = element.parentElement;
-        parent.querySelectorAll('.btn-status').forEach(btn => btn.classList.remove('selected'));
-        element.classList.add('selected');
-    }
-    function jump(tabIndex) { console.log("Changement d'onglet vers : " + tabIndex); }
-    function openTechModal(btn) { console.log("Ouverture modale technique"); }
-    function filtrerVilles(cp) { console.log("Filtrage CP : " + cp); }
-    function revenirSaisie() { console.log("Retour à la saisie de l'audit"); }
-</script>
+        function loadAudits() {
+            db.collection("audits").orderBy("timestamp", "desc").limit(10).get().then(querySnapshot => {
+                const list = document.getElementById('audit-list');
+                list.innerHTML = ""; // Vide la liste avant de la recharger
+                querySnapshot.forEach(doc => {
+                    const data = doc.data();
+                    const li = document.createElement('li');
+                    li.style.marginBottom = "15px";
+                    li.style.borderBottom = "1px solid #eee";
+                    li.style.paddingBottom = "10px";
+                    li.innerHTML = `<strong>${data.client}</strong> - le ${data.date}<br>
+                                    <span style="color: #666; font-size: 14px;">${data.observations}</span>`;
+                    list.appendChild(li);
+                });
+            });
+        }
+    </script>
 </body>
 </html>
